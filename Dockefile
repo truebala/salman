@@ -1,8 +1,15 @@
-FROM amazonlinux:3
-RUN yum update -y
-RUN yum install httpd -y
-RUN systemctl start httpd
-COPY index.html /var/www/html
+# Use the official CentOS base image
+FROM centos:latest
+
+# Install the httpd package
+RUN yum -y update && yum -y install httpd && yum clean all
+
+# Copy your HTML files or web application to the container
+COPY index.html /var/www/html/
+
+# Expose port 80 for HTTP traffic
 EXPOSE 80
-CMD ["HTTPD", "-D", "FOREGROUND"]
+
+# Start the httpd service when the container runs
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
 
